@@ -15,6 +15,9 @@ public class FileUploadConfig {
         MultipartConfigFactory factory = new MultipartConfigFactory();
         factory.setMaxFileSize(DataSize.ofMegabytes(100)); // Tamaño máximo del archivo
         factory.setMaxRequestSize(DataSize.ofMegabytes(100)); // Tamaño máximo de la solicitud
-        return factory.createMultipartConfig();
+        MultipartConfigElement config = factory.createMultipartConfig();
+        System.out.println("MultipartConfigElement creado: maxFileSize=" + config.getMaxFileSize() + ", maxRequestSize="
+                + config.getMaxRequestSize());
+        return config;
     }
 }
