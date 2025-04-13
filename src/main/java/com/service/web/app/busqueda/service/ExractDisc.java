@@ -81,7 +81,7 @@ public class ExractDisc implements DocumentService {
 					} else {
 						errorFiles.add(file.getOriginalFilename()); // Add to error list
 						System.out.println("No match found for file: " + file.getOriginalFilename());
-						continue; // Skip to the next file
+						// continue; // Skip to the next file
 					}
 
 					d.setTitle(metadata.get("dc:title"));
