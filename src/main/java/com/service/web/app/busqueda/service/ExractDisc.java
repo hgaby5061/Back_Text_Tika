@@ -39,6 +39,8 @@ public class ExractDisc implements DocumentService {
 	public String extractText(List<MultipartFile> files, Map<String, String> modif, Map<String, String> author)
 			throws IOException, TikaException, SAXException {
 
+		System.out.println("entro a la implementacion");
+
 		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", new Locale("es", "ES"));
 		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
 				.withZone(ZoneOffset.UTC);

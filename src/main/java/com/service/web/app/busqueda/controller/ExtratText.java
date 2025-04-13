@@ -40,6 +40,7 @@ public class ExtratText {
 		String documents = null;
 		if (file.size() > 0)
 			try {
+				System.out.println("hay documentos");
 				documents = document.extractText(file, modif, author);
 				System.out.println("SALIO DE TIKA");
 			} catch (IOException | SAXException | TikaException e) {
