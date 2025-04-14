@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -71,21 +72,36 @@ public class ExractDisc implements DocumentService {
 					d.setId(metadata.get("xmpMM:DocumentID"));
 					d.setId(metadata.get("custom:ICV"));
 
-					String pattern = "^(.*?\\.(html|pdf|xml|doc|docx))\\d+\\.tmp$";
-					Pattern r = Pattern.compile(pattern);
-					Matcher m = r.matcher(file.getOriginalFilename());
+					/*
+					 * String pattern = "^(.*?\\.(html|pdf|xml|doc|docx))";
+					 * Pattern r = Pattern.compile(pattern);
+					 * Matcher m = r.matcher(file.getOriginalFilename());
+					 * System.out.println();
+					 * 
+					 * if (m.find()) {
+					 * String realFilename = m.group(1);
+					 * d.setName(realFilename);
+					 * if (d.getId() == null)
+					 * d.setId(realFilename + "_" + modif.get("modified"));
+					 * } else {
+					 * errorFiles.add(file.getOriginalFilename()); // Add to error list
+					 * System.out.println("No match found for file: " + file.getOriginalFilename());
+					 * // continue; // Skip to the next file
+					 * }
+					 */
+					List<String> allowedExtensions = Arrays.asList(".txt", ".pdf", ".doc", ".docx", ".html");
 
-					if (m.find()) {
-						String realFilename = m.group(1);
-						d.setName(realFilename);
+					boolean isValidExtension = allowedExtensions.stream()
+							.anyMatch(file.getOriginalFilename()::endsWith);
+					if (isValidExtension) {
+						d.setName(file.getOriginalFilename().split("^(.*?\\\\.(html|pdf|xml|doc|docx))")[0]);
 						if (d.getId() == null)
-							d.setId(realFilename + "_" + modif.get("modified"));
+							d.setId(file.getOriginalFilename() + "_" + modif.get("modified"));
 					} else {
-						errorFiles.add(file.getOriginalFilename()); // Add to error list
-						System.out.println("No match found for file: " + file.getOriginalFilename());
-						// continue; // Skip to the next file
+						errorFiles.add(file.getOriginalFilename());
+						System.out.println("formato incorrecto archivo" + file.getOriginalFilename());
+						continue;
 					}
-
 					d.setTitle(metadata.get("dc:title"));
 					d.setDate(metadata.get("dcterms:created"));
 					d.setAuthor(author.get("author"));
